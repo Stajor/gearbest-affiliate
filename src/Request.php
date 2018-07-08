@@ -38,6 +38,7 @@ final class Request {
         $doc = new \DOMDocument();
         libxml_use_internal_errors(true);
         $response = self::getInstance()->get(self::URL.$partUrl, ['query' => $params]);
+
         $doc->loadHTML($response->getBody());
         return new \DOMXPath($doc);
     }

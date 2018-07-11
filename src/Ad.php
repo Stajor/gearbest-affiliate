@@ -3,7 +3,11 @@
 use GearBest\Types\Coupon;
 use GearBest\Types\Product;
 
-class Affiliate {
+class Ad {
+    public function __construct(string $email, string $password) {
+        Request::login($email, $password);
+    }
+
     public function coupons(int $affiliateId, array $params = []) {
         $params['affiliate_id'] = $affiliateId;
 
@@ -16,16 +20,15 @@ class Affiliate {
             $link   = $nodes->item(0)->getElementsByTagName('a')->item(1);
 
             $coupon = new Coupon();
-            $coupon->setAffiliateId($affiliateId);
             $coupon->setId($nodes->item(5)->getAttribute('data-material-id'));
-            $coupon->setImage($nodes->item(5)->getAttribute('data-imgurl'));
-            $coupon->setTitle($nodes->item(0)->getElementsByTagName('span')->item(0)->textContent);
-            $coupon->setLink($link->getAttribute('href'));
-            $coupon->setDescription($link->textContent);
-            $coupon->setCode($nodes->item(1)->textContent);
-            $coupon->setLimit($nodes->item(2)->textContent);
+            $coupon->setAffiliateId($affiliateId);
+            $coupon->setTitle($link->textContent);
             $coupon->setStartAt($nodes->item(3)->textContent);
             $coupon->setEndAt($nodes->item(4)->textContent);
+            $coupon->setImage($nodes->item(5)->getAttribute('data-imgurl'));
+            $coupon->setLink($link->getAttribute('href'));
+            $coupon->setCode($nodes->item(1)->textContent);
+            $coupon->setLimited($nodes->item(2)->textContent);
 
             $coupons[] = $coupon;
         }

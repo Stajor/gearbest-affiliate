@@ -1,37 +1,41 @@
 <?php namespace GearBest\Types;
 
-class Product {
-    protected $image;
-    protected $discount;
+abstract class Product {
+    protected $id;
+    protected $affiliateId;
     protected $title;
+    protected $startAt;
+    protected $endAt;
+    protected $image;
     protected $price;
+    protected $link;
 
     /**
      * @return mixed
      */
-    public function getImage() {
-        return $this->image;
+    public function getId() {
+        return $this->id;
     }
 
     /**
-     * @param mixed $image
+     * @param mixed $id
      */
-    public function setImage($image): void {
-        $this->image = $image;
+    public function setId($id): void {
+        $this->id = $id;
     }
 
     /**
      * @return mixed
      */
-    public function getDiscount() {
-        return $this->discount;
+    public function getAffiliateId() {
+        return $this->affiliateId;
     }
 
     /**
-     * @param mixed $discount
+     * @param mixed $affiliateId
      */
-    public function setDiscount($discount): void {
-        $this->discount = $discount;
+    public function setAffiliateId($affiliateId): void {
+        $this->affiliateId = $affiliateId;
     }
 
     /**
@@ -51,6 +55,48 @@ class Product {
     /**
      * @return mixed
      */
+    public function getStartAt() {
+        return $this->startAt;
+    }
+
+    /**
+     * @param mixed $startAt
+     */
+    public function setStartAt($startAt): void {
+        $this->startAt = empty($startAt) ? null : new \DateTime($startAt);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEndAt() {
+        return $this->endAt;
+    }
+
+    /**
+     * @param mixed $endAt
+     */
+    public function setEndAt($endAt): void {
+        $this->endAt = empty($endAt) ? null : new \DateTime($endAt);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImage() {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image): void {
+        $this->image = $image;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getPrice() {
         return $this->price;
     }
@@ -59,26 +105,22 @@ class Product {
      * @param mixed $price
      */
     public function setPrice($price): void {
-        $this->price = (float)preg_replace("/[^0-9.]/", "", $price);
+        $this->price = $price;
     }
 
     /**
      * @return mixed
      */
-    public function getReferrerLink() {
-        $response = Request::post('/link/do-add-banner-link', ['info' => [
-//            'link_url' =>
-            'link_img' => $this->getImage(),
-//            'aff_id' => ''
-//info[cate_id]: 11239
-//info[material_id]: 1477852
-//info[material_type]: 2
-        ]]);
-
-
-
-        $data = json_decode($response->getBody(), true);
-
-        return $data['data'];
+    public function getLink() {
+        return $this->link;
     }
+
+    /**
+     * @param mixed $link
+     */
+    public function setLink($link): void {
+        $this->link = $link;
+    }
+
+    abstract public function getClickTag(): string;
 }

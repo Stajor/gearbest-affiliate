@@ -3,9 +3,7 @@
 $dotenv = new \Dotenv\Dotenv(__DIR__);
 $dotenv->load();
 
-\GearBest\Request::login(getenv('GB_EMAIL'), getenv('GB_PASSWORD'));
-
-$affiliate = new \GearBest\Affiliate();
-$coupons = $affiliate->newArrivals(10087298, ['pagesize' => 100]);
+$affiliate = new \GearBest\Ad(getenv('GB_EMAIL'), getenv('GB_PASSWORD'));
+$coupons = $affiliate->coupons(10087298, ['pagesize' => 100]);
 
 print_r($coupons);

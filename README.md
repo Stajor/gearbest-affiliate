@@ -25,11 +25,7 @@ and run `composer update`
 ## Usage
 
 ```php
-<?php
-
-\GearBest\Request::login([email], [password]);
-
-$affiliate = new \GearBest\Affiliate();
+$affiliate = new \GearBest\Affiliate([email], [password]);
 $coupons = $affiliate->coupons([affiliate_id], ['pagesize' => 10, 'site_id' => 'en']);
 
 ```

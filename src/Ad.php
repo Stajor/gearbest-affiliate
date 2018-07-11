@@ -1,6 +1,5 @@
 <?php namespace GearBest;
 
-use GearBest\Types\Coupon;
 use GearBest\Types\Product;
 
 class Ad {
@@ -17,18 +16,25 @@ class Ad {
         /** @var \DOMElement $node */
         foreach ($xpath->query('//table[@class="table coupon-table"]//tbody//tr') AS $node) {
             $nodes  = $node->getElementsByTagName('td');
-            $link   = $nodes->item(0)->getElementsByTagName('a')->item(1);
+            $data   = $nodes->item(5);
 
-            $coupon = new Coupon();
-            $coupon->setId($nodes->item(5)->getAttribute('data-material-id'));
-            $coupon->setAffiliateId($affiliateId);
-            $coupon->setTitle($link->textContent);
+            $coupon = new Product();
+            $coupon->setId($data->getAttribute('data-couponid'));
+            $coupon->setTitle($data->getAttribute('data-couponname'));
             $coupon->setStartAt($nodes->item(3)->textContent);
             $coupon->setEndAt($nodes->item(4)->textContent);
-            $coupon->setImage($nodes->item(5)->getAttribute('data-imgurl'));
-            $coupon->setLink($link->getAttribute('href'));
+            $coupon->setImage($data->getAttribute('data-imgurl'));
+            $coupon->setLink($nodes->item(0)->getElementsByTagName('a')->item(1)->getAttribute('href'));
             $coupon->setCode($nodes->item(1)->textContent);
             $coupon->setLimited($nodes->item(2)->textContent);
+            $coupon->setClickTagUrl('/link/do-add-coupon-link');
+            $coupon->setClickTagParams([
+                'id'            => $coupon->getId(),
+                'aff_id'        => $affiliateId,
+                'link_img'      => $coupon->getImage(),
+                'material_id'   => $data->getAttribute('data-material-id'),
+                'material_type' => 7
+            ]);
 
             $coupons[] = $coupon;
         }
@@ -44,32 +50,25 @@ class Ad {
 
         /** @var \DOMElement $node */
         foreach ($xpath->query('//ul[@class="newarrivals-list clearfix"]//li') AS $node) {
-            $button = $node->getElementsByTagName('button')->item(0);
+            $data = $node->getElementsByTagName('button')->item(0);
 
             $product = new Product();
-            $product->setImage($node->getElementsByTagName('img')->item(0)->getAttribute('src'));
+            $product->setId($data->getAttribute('data-material-id'));
+            $product->setTitle($data->getAttribute('data-title'));
+            $product->setImage($data->getAttribute('data-url'));
             $product->setDiscount($node->getElementsByTagName('strong')->item(0)->textContent);
-            $product->setTitle($node->getElementsByTagName('a')->item(1)->textContent);
-            $product->setPrice($node->getElementsByTagName('span')->item(2)->textContent);
-
-
-
-//            die(var_dump($product));
-
-//            $nodes  = $node->getElementsByTagName('td');
-//            $link   = $nodes->item(0)->getElementsByTagName('a')->item(1);
-
-//            $coupon = new Coupon();
-//            $coupon->setAffiliateId($affiliateId);
-//            $coupon->setId($nodes->item(5)->getAttribute('data-material-id'));
-//            $coupon->setImage($nodes->item(5)->getAttribute('data-imgurl'));
-//            $coupon->setTitle($nodes->item(0)->getElementsByTagName('span')->item(0)->textContent);
-//            $coupon->setLink($link->getAttribute('href'));
-//            $coupon->setDescription($link->textContent);
-//            $coupon->setCode($nodes->item(1)->textContent);
-//            $coupon->setLimit($nodes->item(2)->textContent);
-//            $coupon->setStartAt($nodes->item(3)->textContent);
-//            $coupon->setEndAt($nodes->item(4)->textContent);
+            $product->setPrice("{$data->getAttribute('data-current_intval_price')}.{$data->getAttribute('data-current_float_price')}");
+            $product->setCode($data->getAttribute('data-code'));
+            $product->setLink($data->getAttribute('data-link'));
+            $product->setClickTagUrl('/link/do-add-banner-link');
+            $product->setClickTagParams([
+                'link_url'      => $product->getLink(),
+                'link_img'      => $product->getImage(),
+                'aff_id'        => $affiliateId,
+                'cate_id'       => $data->getAttribute('data-cate'),
+                'material_id'   => $product->getId(),
+                'material_type' => 2
+            ]);
 
             $products[] = $product;
         }

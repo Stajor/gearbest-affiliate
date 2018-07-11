@@ -1,14 +1,20 @@
 <?php namespace GearBest\Types;
 
-abstract class Product {
+use GearBest\Request;
+
+class Product {
     protected $id;
-    protected $affiliateId;
     protected $title;
     protected $startAt;
     protected $endAt;
     protected $image;
     protected $price;
     protected $link;
+    protected $code;
+    protected $limited;
+    protected $discount;
+    protected $clickTagUrl;
+    protected $clickTagParams;
 
     /**
      * @return mixed
@@ -22,20 +28,6 @@ abstract class Product {
      */
     public function setId($id): void {
         $this->id = $id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAffiliateId() {
-        return $this->affiliateId;
-    }
-
-    /**
-     * @param mixed $affiliateId
-     */
-    public function setAffiliateId($affiliateId): void {
-        $this->affiliateId = $affiliateId;
     }
 
     /**
@@ -122,5 +114,67 @@ abstract class Product {
         $this->link = $link;
     }
 
-    abstract public function getClickTag(): string;
+    /**
+     * @return mixed
+     */
+    public function getCode() {
+        return $this->code;
+    }
+
+    /**
+     * @param mixed $code
+     */
+    public function setCode($code): void {
+        $this->code = $code;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLimited() {
+        return $this->limited;
+    }
+
+    /**
+     * @param mixed $limited
+     */
+    public function setLimited($limited): void {
+        $this->limited = $limited;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDiscount() {
+        return $this->discount;
+    }
+
+    /**
+     * @param mixed $discount
+     */
+    public function setDiscount($discount): void {
+        $this->discount = $discount;
+    }
+
+    /**
+     * @param mixed $clickTagUrl
+     */
+    public function setClickTagUrl($clickTagUrl): void {
+        $this->clickTagUrl = $clickTagUrl;
+    }
+
+    /**
+     * @param mixed $clickTagParams
+     */
+    public function setClickTagParams($clickTagParams): void {
+        $this->clickTagParams = $clickTagParams;
+    }
+
+    public function getClickTag() {
+        $response = Request::post($this->clickTagUrl, ['info' => $this->clickTagParams]);
+
+        $data = json_decode($response->getBody(), true);
+
+        return $data['data'];
+    }
 }

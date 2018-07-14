@@ -75,4 +75,38 @@ class Ad {
 
         return $products;
     }
+
+    public function highCommissionProducts(int $affiliateId, array $params = []) {
+        $params['affiliate_id'] = $affiliateId;
+
+        $xpath      = Request::getXpath('/home/link/high-commission-product', $params);
+        $products   = [];
+
+        /** @var \DOMElement $node */
+        foreach ($xpath->query('//div[@class="hottest-deals high-hottest-deals"]//li') AS $node) {
+            $data = $node->getElementsByTagName('button')->item(0);
+
+            $product = new Product();
+            $product->setId($data->getAttribute('data-material-id'));
+            $product->setPrice("{$data->getAttribute('data-current_intval_price')}.{$data->getAttribute('data-current_float_price')}");
+            $product->setCode($data->getAttribute('data-code'));
+            $product->setLink($data->getAttribute('data-link'));
+            $product->setImage($data->getAttribute('data-url'));
+            $product->setTitle($data->getAttribute('data-title'));
+            $product->setClickTagUrl('/link/do-add-banner-link');
+            $product->setClickTagParams([
+                'link_url'              => $product->getLink(),
+                'link_img'              => $product->getImage(),
+                'aff_id'                => $affiliateId,
+                'cate_id'               => $data->getAttribute('data-cate'),
+                'material_id'           => $product->getId(),
+                'material_type'         => 3,
+                'is_high_commission'    => true
+            ]);
+
+            $products[] = $product;
+        }
+
+        return $products;
+    }
 }

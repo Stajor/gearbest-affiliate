@@ -147,4 +147,35 @@ class Ad {
 
         return $products;
     }
+
+    public function featuredPromotions(int $affiliateId, array $params = []) {
+        $params['affiliate_id'] = $affiliateId;
+
+        $xpath      = Request::getXpath('/link/featured', $params);
+        $products   = [];
+
+        /** @var \DOMElement $node */
+        foreach ($xpath->query('//div[@class="gb-custom-promotions-table featured-table"]//div[@class="gb-custom-promotions-tr"]') AS $node) {
+            $product = new Product();
+            $product->setId($node->getAttribute('data-bannerid'));
+            $product->setLink($node->getAttribute('data-url'));
+            $product->setImage($node->getElementsByTagName('img')->item(0)->getAttribute('src'));
+            $product->setTitle($node->getElementsByTagName('p')->item(0)->textContent);
+            $product->setStartAt($node->getElementsByTagName('div')->item(5)->textContent);
+            $product->setEndAt($node->getElementsByTagName('div')->item(6)->textContent);
+            $product->setClickTagUrl('/link/do-add-banner-link');
+            $product->setClickTagParams([
+                'link_url'      => $product->getLink(),
+                'link_img'      => $product->getImage(),
+                'aff_id'        => $affiliateId,
+                'cate_id'       => $node->getAttribute('data-cateid'),
+                'banner_id'     => $product->getId(),
+                'material_type' => 5
+            ]);
+
+            $products[] = $product;
+        }
+
+        return $products;
+    }
 }

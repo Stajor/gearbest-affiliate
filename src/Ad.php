@@ -118,7 +118,10 @@ class Ad {
 
         /** @var \DOMElement $node */
         foreach ($xpath->query('//div[@class="hottest-deals"]//li') AS $node) {
-            $data = $node->getElementsByTagName('button')->item(0);
+            $data   = $node->getElementsByTagName('button')->item(0);
+            $ex     = explode('/', $node->getElementsByTagName('div')->item(1)->textContent);
+            $month  = preg_replace("/[^0-9]/", '', $ex[0]);
+            $day    = preg_replace("/[^0-9]/", '', $ex[1]);
 
             $product = new Product();
             $product->setId($data->getAttribute('data-material-id'));
@@ -127,6 +130,8 @@ class Ad {
             $product->setLink($data->getAttribute('data-link'));
             $product->setImage($data->getAttribute('data-url'));
             $product->setTitle($data->getAttribute('data-title'));
+            $product->setDiscount($node->getElementsByTagName('span')->item(1)->textContent);
+            $product->setEndAt(date("Y-{$month}-{$day}"));
             $product->setClickTagUrl('/link/do-add-banner-link');
             $product->setClickTagParams([
                 'link_url'              => $product->getLink(),

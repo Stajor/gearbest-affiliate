@@ -15,6 +15,7 @@ class Product {
     protected $discount;
     protected $clickTagUrl;
     protected $clickTagParams;
+    protected $banners;
 
     /**
      * @return mixed
@@ -168,6 +169,20 @@ class Product {
      */
     public function setClickTagParams($clickTagParams): void {
         $this->clickTagParams = $clickTagParams;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBanners() {
+        return $this->banners;
+    }
+
+    /**
+     * @param mixed $banners
+     */
+    public function setBanners($banners): void {
+        $this->banners = $banners;
     }
 
     public function getClickTag() {

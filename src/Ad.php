@@ -163,6 +163,7 @@ class Ad {
             $product->setTitle($node->getElementsByTagName('p')->item(0)->textContent);
             $product->setStartAt($node->getElementsByTagName('div')->item(5)->textContent);
             $product->setEndAt($node->getElementsByTagName('div')->item(6)->textContent);
+            $product->setBanners($node->getAttribute('data-imgs'));
             $product->setClickTagUrl('/link/do-add-banner-link');
             $product->setClickTagParams([
                 'link_url'      => $product->getLink(),
@@ -194,6 +195,7 @@ class Ad {
             $product->setTitle($node->getElementsByTagName('p')->item(0)->textContent);
             $product->setStartAt($node->getElementsByTagName('div')->item(5)->textContent);
             $product->setEndAt($node->getElementsByTagName('div')->item(6)->textContent);
+            $product->setBanners($node->getAttribute('data-imgs'));
             $product->setClickTagUrl('/link/do-add-banner-link');
             $product->setClickTagParams([
                 'link_url'      => $product->getLink(),

@@ -3,7 +3,7 @@
 ![Minimal PHP version](https://img.shields.io/packagist/php-v/stajor/gearbest-affiliate.svg)
 [![Build Status](https://api.travis-ci.org/Stajor/gearbest-affiliate.svg?branch=master)](https://travis-ci.org/Stajor/gearbest-affiliate)
 
-This PHP library will help you to interactive with Gearbest Affiliate site.
+This PHP library will help you to interactive with Gearbest Affiliate API.
 
 ## Installation
 
@@ -12,7 +12,7 @@ Add this line to your application's composer.json:
 ```json
 {
     "require": {
-        "stajor/gearbest-affiliate": "^1.0"
+        "stajor/gearbest-affiliate": "^2.0"
     }
 }
 ```
@@ -25,8 +25,8 @@ and run `composer update`
 ## Usage
 
 ```php
-$affiliate = new \GearBest\Affiliate([email], [password]);
-$coupons = $affiliate->coupons([affiliate_id], ['pagesize' => 10, 'site_id' => 'en']);
+$api = new \GearBest\API([API KEY], [API SECRET]);
+$coupons = $api->listCoupons(['language'  => 'en']);
 
 ```
 

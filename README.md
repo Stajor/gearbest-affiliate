@@ -1,4 +1,4 @@
-# PHP SMS Fetcher
+# Gearbest Affiliate API
 
 ![Minimal PHP version](https://img.shields.io/packagist/php-v/stajor/gearbest-affiliate.svg)
 [![Build Status](https://api.travis-ci.org/Stajor/gearbest-affiliate.svg?branch=master)](https://travis-ci.org/Stajor/gearbest-affiliate)

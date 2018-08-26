@@ -7,7 +7,9 @@ class Collection implements \Iterator {
     protected $pages    = 0;
 
     public function __construct(array $response) {
-        if (isset($response['data']['items'])) {
+        if (empty($response)) {
+            $this->items = [];
+        } elseif (isset($response['data']['items'])) {
             $this->items    = $response['data']['items'];
             $this->results  = $response['data']['total_results'];
             $this->pages    = $response['data']['total_pages'];

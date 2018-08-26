@@ -55,7 +55,7 @@ class API {
             throw new Exception($response['msg'], $response['error_no']);
         }
 
-        return new Collection($response);
+        return new Collection($response ?: []);
     }
 
     private function sign($params) {
